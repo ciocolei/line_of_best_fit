@@ -1,0 +1,206 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.ArrayList;
+public class full_program extends JFrame implements ActionListener{
+    // declaring and initializing all variables needed for the actionperformed method here //
+    JMenuItem quit = new JMenuItem("  quit  "); 
+    JMenuItem reset = new JMenuItem("  reset  ");
+    JButton addButton = new JButton(" add ");
+    JButton removeButton = new JButton(" remove "); 
+    JTextField inputTextField1 = new JTextField(" enter value of first x-coordinate here ", 80); 
+    JTextField  inputTextField2 = new JTextField(" enter value of first y-coordinate here ", 80); 
+    JTextField inputTextField3 = new JTextField("  enter value of second x-coordinate here  ", 80); 
+    JTextField   inputTextField4 = new JTextField("  enter value of second y-coordinate here  ", 80); 
+    JTextField inputTextFieldnew = new JTextField(" enter value of new x-coordinate here ", 80); 
+    JTextField inputTextFieldnew2 = new JTextField(" enter value of new y-coordinate here ", 80); 
+    JMenuItem xAverage = new JMenuItem(" x average ");
+    JMenuItem yAverage = new JMenuItem(" y average ");
+    JMenuItem alpha = new JMenuItem(" alpha ");
+    JMenuItem beta = new JMenuItem(" beta ");
+    JMenuItem  bestLine = new JMenuItem(" best-fitted line ");
+    JTextField resultField = new JTextField(" result: ");
+    ArrayList<JTextField> yList = new ArrayList<JTextField>();
+    ArrayList<JTextField> xList = new ArrayList<JTextField>();
+    // creating the GUI here //
+    public full_program(String title){
+        setTitle(title);
+        JPanel content = new JPanel();
+        content.setLayout(new BorderLayout());
+        JMenu justMenu = new JMenu("  menu  ");
+        reset.addActionListener(this);
+        justMenu.add(reset);
+        quit.addActionListener(this);
+        justMenu.add(quit);
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(justMenu);
+        JMenu linearMenu = new JMenu("  linear regression ");
+        xAverage.addActionListener(this);
+        linearMenu.add(xAverage);
+        yAverage.addActionListener(this);
+        linearMenu.add(yAverage);
+        alpha.addActionListener(this);
+        linearMenu.add(alpha);
+        beta.addActionListener(this);
+        linearMenu.add(beta);
+        bestLine.addActionListener(this);
+        linearMenu.add(bestLine);
+        menuBar.add(linearMenu);
+        setJMenuBar(menuBar);
+        setSize(1000,1000); 
+        setLocation(0,0); 
+        JPanel inputPanel = new JPanel(); 
+        inputPanel.setLayout(new GridLayout(2,10,5,5)); 
+        JLabel inputLabel1 = new JLabel("                                        X1 : "); 
+        inputPanel.add(inputLabel1); 
+        inputPanel.add(inputTextField1); 
+        JLabel inputLabel2 = new JLabel("                                        Y1 : "); 
+        JLabel inputLabel3 = new JLabel("                                        X2 : "); 
+        inputPanel.add(inputLabel3); 
+        JLabel inputLabel4 = new JLabel("                                        Y2 : "); 
+        inputPanel.add(inputLabel4); 
+        // adding text fields to corresponding array lists here //
+        yList.add(inputTextField2);
+        yList.add(inputTextField4); 
+        yList.add(inputTextFieldnew2);
+        xList.add(inputTextField1);
+        xList.add(inputTextField3); 
+        xList.add(inputTextFieldnew);
+        xList.setEditable(true);
+        yList.setEditable(true);
+        xList.setFont(new java.awt.Font("Arial", Font.ITALIC | Font.BOLD, 12));
+        xList.setForeground(Color.BLACK);
+        xList.setBackground(Color.PINK);
+        yList.setFont(new java.awt.Font("Arial", Font.ITALIC | Font.BOLD, 12));
+        yList.setForeground(Color.BLACK);
+        yList.setBackground(Color.PINK);
+        inputPanel.add(xList.getText()); // adding arraylists of jtextfields here
+        inputPanel.add(yList.getText());
+        content.add(inputPanel,BorderLayout.NORTH); 
+        JPanel operatorPanel = new JPanel(); 
+        operatorPanel.setLayout(new GridLayout(1,2,5,5));  
+        addButton.addActionListener(this);
+        operatorPanel.add(addButton); 
+        removeButton.addActionListener(this);
+        operatorPanel.add(removeButton); 
+        content.add(operatorPanel, BorderLayout.CENTER);
+        JPanel resultsPanel = new JPanel();
+        resultsPanel.setLayout(new GridLayout(1,2,5,5));
+        resultField.setFont(new java.awt.Font("Arial", Font.ITALIC | Font.BOLD, 18));
+        resultField.setForeground(Color.PINK);
+        resultField.setBackground(Color.LIGHT_GRAY);
+        resultField.setEditable(false);
+        resultsPanel.add(resultField);
+        content.add(resultsPanel, BorderLayout.SOUTH);
+        content.setBackground(Color.BLUE);
+        setContentPane(content);
+        setSize(1440,1000);
+        setLocation(0,0);
+        pack();
+        setVisible(true);
+    }
+    // giving buttons functions here //
+    public void actionPerformed(ActionEvent e){
+        Double yVals = Double.parseDouble(stryList);
+        Double xVals = Double.parseDouble(strxList);
+        double rise; //getting difference of points' x-intercepts
+	      double run; //doing the same for points' y-intercepts
+        JTextField inputTextFieldnewest = new JTextField();
+        JTextField inputTextFieldnewest2 = new JTextField();
+        newX = inputTextFieldnewest.getText();
+        newY = inputTextFieldnewest2.getText();
+        double result;
+        double sum;
+        double slope;
+        double otherResult;
+        if(e.getSource()==reset){ // clears all text fields here
+            yList.setText(" "); 
+            xList.setText(" ");
+            resultField.setText(" ");
+            // clearing all text fields here //
+        }
+        // if add button is clicked a new pair of x and y coordinate text fields appear //
+        else if(e.getSource()==addButton){ 
+            xList.add(newX); // adding new element to arraylist for x and y
+            yList.add(newY);
+            content.setVisible(true);
+        } // if remove button is clicked, newly added pair of x and y coordinates will be removed //
+        else if(e.getSource()==removeButton){
+            inputPanel.Remove(newX);
+            inputPanel.Remove(newY);
+            content.setVisible(true);
+        }
+        else if(e.getSource()==yAverage){
+            for(int i=0; i<yVals.size(); i++){
+                sum += i;
+                result = sum/yVals.size();
+            }            
+            resultField.setText("The average of your y-coordinates is "+result+".");
+        }
+        else if(e.getSource()==xAverage){ //x values of string turned into double
+            for(int i=0; i<xVals.size(); i++){
+                sum += i;
+                result = sum/xVals.size();
+            }
+            resultField.setText("The average of your x-coordinates is "+result+".");
+        }
+        else if(e.getSource()==alpha){ //  equals the value of Y when the value of X=0
+            for(int i=0; i<yVals.size(); i++){
+                sum += i;
+                result = sum/yVals.size();
+            }   
+            for(int i=0; i<xVals.size(); i++){
+                sum += i;
+                otherResult = sum/xVals.size();
+            }
+            if (run>0){
+	            slope = rise/run;
+	            resultField.setText("The slope of your inputed points is "+result+".");
+            }
+            else{
+                resultField.setText("Your points have no slope.");
+            }
+            double superFinal = +result - (slope * otherResult); 
+            resultField.setText(" Alpha:" +superFinal+ ".");
+        }
+        else if(e.getSource()==beta){ // the coefficient of X; the slope of the regression line
+            for(int i=0;i<yVals.size(); i++){
+                run -= i;
+            }
+            for(int i;i<xValst.size(); i++){
+                rise -= i;
+            }
+	        if (run>0){
+	            result = rise/run;
+	            resultField.setText("The beta (slope) of your inputed points is "+result+".");
+            }
+            else{
+                resultField.setText("Your points have no beta/slope.");
+            }
+        }
+        else if(e.getSource()==bestLine){ // y = "beta"x +"alpha"
+            for(int i=0;i<yVals.size(); i++){
+                run -= i;
+            }
+            for(int i;i<xValst.size(); i++){
+                rise -= i;
+                otherResult = sum/xVals.size();
+            }
+            if (run>0){
+                slope = rise/run;
+            }
+            else{
+                resultField.setText("Your points have no beta/slope, and therefore there's no line of best fit.");
+            }
+            double superFinal = result - (slope * otherResult); 
+            resultField.setText("Line of best fit:" +slope+"x + " +superFinal+ ".");
+        }
+        else if(e.getSource()==quit){
+            System.exit(0);
+        }
+        else;
+    }
+    public static void main(String[] args){
+        new full_program("   test   ");
+    }
+}
